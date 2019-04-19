@@ -41,7 +41,7 @@ git commit -m "提交信息" 将暂存区内容提交到当前分支
 默认单仓库
 git push origin <branch name,eg: master || dev >
 git tag -a v0.1.0 -m "version1" 版本标签
-git push origin v0.1.0
+git push origin v0.1.0 提交
 
 多仓库
 git remote add gitee https://gitee.com/flyricer/firstPractice.git
