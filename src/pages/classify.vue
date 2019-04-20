@@ -1,5 +1,6 @@
 <template>
-   <transition name="slide">
+   <!-- <transition name="slide"> -->
+		 <!-- <keep-alive> -->
 	   	<div id="wrapper" ref="scrollWrap">
 	       	<div class="scroller">
 	      		<ul>
@@ -27,8 +28,8 @@
 	        </transition> 
 	        <goBack></goBack>
 	    </div>
-
-   </transition>
+		 <!-- </keep-alive> -->
+   	<!-- </transition> -->
 </template>
 
 <script>
@@ -39,24 +40,24 @@ import {api} from "../base/js/api.js"
 import Loading from '../components/loading.vue'
 import goBack from '../components/go-back.vue'
 
-/*获取当前缩放比*/
-const DEVICE_RATIO=getDeviceRatio();
+// /*获取当前缩放比*/
+// const DEVICE_RATIO=getDeviceRatio();
 
-/**
- * 
- * @param threshold 触发事件的阀值，即滑动多少距离触发
- * @param stop 下拉刷新后回滚
- */
+// /**
+//  * 
+//  * @param threshold 触发事件的阀值，即滑动多少距离触发
+//  * @param stop 下拉刷新后回滚
+//  */
 
- /*下拉配置*/
-const DOWN_CONFIG={
-	threshold:80*DEVICE_RATIO,
-	stop:40*DEVICE_RATIO
-}
-/*上拉配置*/
-const UP_CONFIG={
-	threshold:-80*DEVICE_RATIO,
-}
+//  /*下拉配置*/
+// const DOWN_CONFIG={
+// 	threshold:80*DEVICE_RATIO,
+// 	stop:40*DEVICE_RATIO
+// }
+// /*上拉配置*/
+// const UP_CONFIG={
+// 	threshold:-80*DEVICE_RATIO,
+// }
 
 
 export default {
@@ -73,7 +74,9 @@ export default {
    			currentPage:0,  
    			loadingWord:"正在加载",
    			loadingPosition:""	,
-        noMoreData:false,
+				noMoreData:false,
+				top: 0,
+				scrollTop: 0
    		}
    	},
    	components:{
@@ -88,16 +91,42 @@ export default {
 					this.scroller.refresh(); 
    			})	
    		}
-	 	},
-		
+		},
+		 
+		activated () {
+      if (!this.$route.meta.isBack) {
+          this.requestData();
+      }
+      this.$route.meta.isBack = false;
+      // if (document.body.scrollTop) {
+      //   document.body.scrollTop = sessionStorage.getItem('roll')
+      // } else {
+      //   document.documentElement.scrollTop = sessionStorage.getItem('roll')
+      // }
+      // window.addEventListener('scroll', this.roll)
+    },
+    // deactivated () {
+    //   sessionStorage.setItem('roll', this.top)
+    //   window.removeEventListener('scroll', this.roll,true)
+    // },
+
     mounted(){ 
-			this.requestData();
+			// window.addEventListener('scroll', this.roll,true)
+			// this.requestData();
 				this.$nextTick(()=>{
 					this.initScroll()
-				})
+				})	
+		},
+		
+	 	beforeRouteEnter(to, from, next) {
+        if (from.name == "filmdetail") {
+          to.meta.isBack = true;
+        } else {
+          to.meta.isBack = false;
+        }
+        next();
+		},
 			
-   	},
-	 
 	 	methods:{
       filterDirectors(arr){
 				var name="";         
@@ -116,6 +145,13 @@ export default {
         }
 				this.$router.push({path:`/film-detail/${id}`})
 			
+			},
+			roll () {
+				  clearTimeout(this.timer);
+					this.timer=setTimeout(()=>{
+						this.top = document.body.scrollTop || document.documentElement.scrollTop
+						// console.log(this.top)
+					},13)
 			},
 	    enable(){
 	    	this.scroller&&this.scroller.enable()
@@ -179,12 +215,12 @@ export default {
 					scrollX: false,
 					startY: 0,
 					probeType:3,
-					pullDownRefresh:DOWN_CONFIG,
-					pullUpLoad:UP_CONFIG,
-					// pullDownRefresh:true,
-					// pullUpLoad:true,
+					// pullDownRefresh:DOWN_CONFIG,
+					// pullUpLoad:UP_CONFIG,
+					pullDownRefresh:true,
+					pullUpLoad:true,
 				})
-				console.log(this.scroller)
+				// console.log(this.scroller)
 				/*下拉刷新*/
 				this.scroller.on('pullingDown',()=>{this.pullDownEvent()});
 

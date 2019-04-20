@@ -69,13 +69,21 @@ const router = new VueRouter({
     {
       path: '/classify/:type',
       component: Classify,
-      name: 'classify'
+      name: 'classify',
+      meta: {
+        keepAlive: true, 
+        isBack: false
+      }
     },
 
     {
       path: '/film-detail/:id',
       name: 'filmdetail',
-      component: filmDetail
+      component: filmDetail,
+      meta: {
+        keepAlive: true, 
+        isBack: false
+      }
     },
     {
       path: '/login',
