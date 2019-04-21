@@ -42,7 +42,7 @@ export default {
     mounted(){
     	const el = this.$refs[this.el];
         this.scroller=this.initScroll(el);
-        console.log(this.scroller)
+        // console.log(this.scroller)
         const {request}=el.dataset;
 
         this.axios.get(`/api/${request}?start=${Math.floor(Math.random()*10)}`)

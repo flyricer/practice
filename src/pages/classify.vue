@@ -1,6 +1,7 @@
 <template>
-   <!-- <transition name="slide"> -->
-		 <!-- <keep-alive> -->
+<transition name="slide">
+   	<div class="classify">
+			<goBack></goBack>
 	   	<div id="wrapper" ref="scrollWrap">
 	       	<div class="scroller">
 	      		<ul>
@@ -25,11 +26,10 @@
 	         		 ref="loading"
 	         		 :loadingWord="loadingWord"
 	       		></Loading>	     
-	        </transition> 
-	        <goBack></goBack>
+	        </transition>    
 	    </div>
-		 <!-- </keep-alive> -->
-   	<!-- </transition> -->
+   	</div>
+</transition>
 </template>
 
 <script>
@@ -75,8 +75,7 @@ export default {
    			loadingWord:"正在加载",
    			loadingPosition:""	,
 				noMoreData:false,
-				top: 0,
-				scrollTop: 0
+
    		}
    	},
    	components:{
@@ -88,7 +87,7 @@ export default {
    		goodsList(){
    			this.$nextTick(()=>{	
 					// this.scroller.finishPullUp();				 					  
-					this.scroller.refresh(); 
+					this.refresh(); 
    			})	
    		}
 		},
@@ -98,21 +97,16 @@ export default {
           this.requestData();
       }
       this.$route.meta.isBack = false;
-      // if (document.body.scrollTop) {
-      //   document.body.scrollTop = sessionStorage.getItem('roll')
-      // } else {
-      //   document.documentElement.scrollTop = sessionStorage.getItem('roll')
-      // }
-      // window.addEventListener('scroll', this.roll)
     },
-    // deactivated () {
-    //   sessionStorage.setItem('roll', this.top)
-    //   window.removeEventListener('scroll', this.roll,true)
-    // },
 
     mounted(){ 
 			// window.addEventListener('scroll', this.roll,true)
 			// this.requestData();
+			
+				window.onresize = () => {
+					this.refresh()
+					console.log(11)
+    		};
 				this.$nextTick(()=>{
 					this.initScroll()
 				})	
@@ -146,13 +140,7 @@ export default {
 				this.$router.push({path:`/film-detail/${id}`})
 			
 			},
-			roll () {
-				  clearTimeout(this.timer);
-					this.timer=setTimeout(()=>{
-						this.top = document.body.scrollTop || document.documentElement.scrollTop
-						// console.log(this.top)
-					},13)
-			},
+		
 	    enable(){
 	    	this.scroller&&this.scroller.enable()
 	    },
@@ -220,7 +208,7 @@ export default {
 					pullDownRefresh:true,
 					pullUpLoad:true,
 				})
-				// console.log(this.scroller)
+				console.log(this.scroller)
 				/*下拉刷新*/
 				this.scroller.on('pullingDown',()=>{this.pullDownEvent()});
 
@@ -274,103 +262,103 @@ export default {
 </script>
 
 <style scoped lang="scss">
-   	@import '../base/css/base.scss';
-    #wrapper{
-    	position: relative;
-    	top:0;
-    	bottom:0;	
+  @import '../base/css/base.scss';		
+	.classify{
+		width: 100%;
+		height: 100%;
+		#wrapper{
+			position: relative;
+			top:0;
+			bottom:0;	
 			width: 100%;
 			height: 100%;
 			// z-index: 99999;
-    	overflow: hidden;
-    	background:#fff;
-      margin-top: 40px;
-		.scroller{
-			position: absolute;
-			width: 100%;
-			&.topPadding{
-				top:1rem;
-			}	
-				
-		}
-		#loading{
-			text-align: center;
-			position: absolute;
-			z-index: 100;
-			width: 100%;
-			&.center{			
-				top:50%;
-				left:50%;
-				transform:translate(-50%,-50%);
-			}
-			&.pullDownLoading{
+			overflow: hidden;
+			background:#fff;
+			margin-top: 40px;
+			.scroller{
 				position: absolute;
-				top:0;left:0;
-			}
-			&.pullUpLoading{
-				position: absolute;
-				bottom:0;left:0;
-			}
-
+				width: 100%;
+					// &.topPadding{
+					// 	top:1rem;
+					// }			
 			
-			img{
-				margin: 0 auto;
-				width: 0.889rem;
-				height: 0.889rem;
+				.film-list{
+					padding: 0.3125rem;
+					position: relative;
+					border-bottom: 0.0312rem solid #ddd;;
+					@include flex-center;
+					.film-list__img{
+						width:1.7rem;
+						height: 2.7rem;
+						img{
+						width: 100%;
+						height:auto;
+						}
+					}
+					.film-list__detail{
+						flex:1;
+						padding:0 0.35rem 0 0.45rem;
+						p{
+							font-size: 12px;
+							padding:0.0312rem 0;
+							color: #888;
+							@include t-overflow(2);
+							span{
+								color:#77b59c;
+							}
+							&.film-list__detail__title{
+							padding-bottom: 0.08rem;
+							}   		
+						}
+					}	
+				}   			
+			}
+			#loading{
+				text-align: center;
+				position: absolute;
+				z-index: 100;
+				width: 100%;
+				&.center{			
+					top:50%;
+					left:50%;
+					transform:translate(-50%,-50%);
+				}
+				&.pullDownLoading{
+					position: absolute;
+					top:0;left:0;
+				}
+				&.pullUpLoading{
+					position: absolute;
+					bottom:0;left:0;
+				}
+				img{
+					margin: 0 auto;
+					width: 0.889rem;
+					height: 0.889rem;
+				}
 			}
 		}
-		.film-list{
-	   		padding: 0.3125rem;
-	   		position: relative;
-	   		border-bottom: 0.0312rem solid #ddd;;
-	   		@include flex-center;
-	   		.film-list__img{
-	   			width:1.7rem;
-		   		height: 2.7rem;
-		   		img{
-					width: 100%;
-					height:auto;
-		   		}
-	   		}
-	   		.film-list__detail{
-	   			flex:1;
-	   			padding:0 0.35rem 0 0.45rem;
-	   			p{
-	   				font-size: 12px;
-	   				padding:0.0312rem 0;
-	   				color: #888;
-	   				@include t-overflow(2);
-	   				span{
-	   					color:#77b59c;
-	   				}
-	   				&.film-list__detail__title{
-						padding-bottom: 0.08rem;
-	   				}   		
-	   			}
-	   		}	   			
-	   }
-    }
-   
-    .slide-enter-active{
-        transition:all 0.4s;
-    }
-    .slide-enter, .slide-leave-active{
-        transform:translate3d(100%,0,0);
-        transition:all 0.4s;
-    }
+		.slide-enter-active{
+				transition:all 0.4s;
+		}
+		.slide-enter, .slide-leave-active{
+				transform:translate3d(100%,0,0);
+				transition:all 0.4s;
+		}
 
-	 .top-enter-active,.bot-enter-active{
-	    transition:all 0.2s;
+		.top-enter-active,.bot-enter-active{
+			transition:all 0.2s;
+		}
+
+		.top-enter, .top-leave-active{
+				transform:translateY(-100%);
+				transition:all 0.2s;
+		} 
+
+		.bot-enter, .bot-leave-active{
+				transform:translateY(100%);
+				transition:all 0.2s;
+		}
 	}
-
-	.top-enter, .top-leave-active{
-	    transform:translateY(-100%);
-	    transition:all 0.2s;
-	} 
-
-	.bot-enter, .bot-leave-active{
-	    transform:translateY(100%);
-	    transition:all 0.2s;
-	}
-
 </style>
