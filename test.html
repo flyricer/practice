@@ -19,22 +19,17 @@
         </style>
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        <div id="test" style="width:1px;height:17px;background:#0f0;">0%</div>
+        <input type="button" value="Run" id="run"/>
         
-        <ul class="container">
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-        </ul>
+        
         <script>
-        document.querySelector('ul').addEventListener('click', function () {
-            window.scrollTo(100,500)
-        },false)
-        
+
+            var slideDirection = false
+
+            var name = slideDirection ? 'forward' : 'backward'
+           
+            console.log(name)
         
         </script>
     </body>

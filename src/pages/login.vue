@@ -59,7 +59,7 @@ export default{
                 let data = {'username':this.username,'password':this.password}
                 // 接口请求
                 this.axios.post('https://easy-mock.com/mock/5cb7ecb95f5cd34c8032fd7a/example/nser/login',data).then((res)=>{
-                    _this.userToken = res.data.token;
+                    this.userToken = res.data.token;
                 // 接口的传值是(-1,该用户不存在),(0,密码错误)
                     if(res.data == -1){
                         this.tishi = "该用户不存在"
@@ -70,8 +70,8 @@ export default{
                     }else{
                         this.tishi = "登录成功"
                         this.showTishi = true
-                        _this.setToken({token: _this.userToken});
-                        _this.$router.push({path:"/home"});
+                        this.setToken({token: this.userToken});
+                        this.$router.push({path:"/home"});
                     }
                 })
             }

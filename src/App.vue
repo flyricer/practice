@@ -1,14 +1,13 @@
 <template>
-
+<!-- <transition name="slide"> -->
     <div id="app">
     	<keep-alive>
     		 <router-view v-if="$route.meta.keepAlive"></router-view>
     	</keep-alive>
 		<router-view v-if="!$route.meta.keepAlive"></router-view>
 		<!-- <router-view></router-view> -->
-
     </div>
-	
+<!-- </transition> -->
 </template>
 
 <script>
@@ -35,6 +34,19 @@ body{
 		height: 100%;
 		width: 100%;
 		font-family: Microsoft YaHei;
+		position: relative;
+		// .slide-enter-active{
+		// 		transition:all 2.4s;
+		// }
+		// .slide-leave-active{
+		// 		transition:all 2.4s;
+		// }
+		// .slide-enter {
+		// 		transform:translate3d(100%,0,0);
+		// }
+		// .slide-leave-to {
+		// 		transform:translate3d(100%,0,0);
+		// }
 	}	
 }
 

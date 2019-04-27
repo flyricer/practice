@@ -1,5 +1,5 @@
 <template>
-   <div class="car-list-container">
+   <div class="car-list-container">11
 	    <ul>
 	    	<li class="car-list" v-for="(v,i) in goodsList" :key="i">
 	    		<div class="car-list__img">

@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+import store from '../store/store.js'
+
 
 import Index from '../pages/index.vue'
 import Search from '../pages/search.vue'
@@ -10,6 +13,9 @@ import Main from '../pages/main.vue'
 import filmDetail from '../pages/filmDetail.vue'
 import scroll from '../pages/scroll.vue'
 import Login from '../pages/login.vue'
+import example1 from '../components/example1.vue'
+import example2 from '../components/example2.vue'
+import example3 from '../components/example3.vue'
 // import test from '../test1/test.vue'
 // const Car = () => import('pages/car')
 // const Search = () => import('pages/search')
@@ -19,7 +25,7 @@ import Login from '../pages/login.vue'
 // const Classify = () => import('pages/classify')
 // const FilmDetail = () => import('pages/film-detail')
 
-Vue.use(VueRouter)
+
 
 const router = new VueRouter({
   routes: [
@@ -36,7 +42,6 @@ const router = new VueRouter({
           path: '',
           redirect: 'index'
         },
-
         {
           name: 'index',
           path: 'index',
@@ -45,7 +50,28 @@ const router = new VueRouter({
         {
           name: 'search',
           path: 'search',
-          component: Search
+          component: Search,
+          children: [
+            {
+              path: '',
+              redirect: 'example1'
+            },
+            {
+              name: 'coexample1m1',
+              path: 'example1',
+              component: example1
+            },
+            {
+              name: 'example2',
+              path: 'example2',
+              component: example2
+            },
+            {
+              name: 'example3',
+              path: 'example3',
+              component: example3
+            },
+          ]
         },
         {
           name: 'shopcar',
@@ -102,16 +128,15 @@ const router = new VueRouter({
 //注册全局钩子用来拦截导航
 router.beforeEach((to, from, next) => {
   //获取store里面的token
-  // let token = this.$store.state.token;
   //判断要去的路由有没有requiresAuth
   if(to.meta.requiresAuth) {
-    if(this.$store.state.token) {
+    if(store.state.token) {
       next();
     } else {
       next({
-      path: '/login',
-      query: { redirect: to.fullPath } // 将刚刚要去的路由path作为参数，方便登录成功后直接跳转到该路由
-    });
+        path: '/login',
+        query: { redirect: to.fullPath } // 将刚刚要去的路由path作为参数，方便登录成功后直接跳转到该路由
+      });
     }
   } else {
     next();

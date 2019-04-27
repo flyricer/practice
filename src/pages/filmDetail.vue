@@ -1,5 +1,6 @@
 <template>
-	<transition name="slide" mode="out-in"> 
+	<!-- <transition name="slide" mode="out-in">  -->
+	<transition name="slide"> 
 	<div id="detail-container">
 		<div class="film-detail" v-show="!loading">		
 			<div class="iconfont icon-back back" @click="$router.back()"></div>
@@ -340,13 +341,14 @@ export default {
     z-index: 1000;
 }
 
-.slide-enter-active {
+.slide-enter-active, .slide-leave-active{
     transition: all 0.4s;
 }
-.slide-enter,
-.slide-leave-active {
-    transform: translate3d(-100%, 0, 0);
-    transition: all 0.4s;
+.slide-enter{
+    transform: translate3d(100%, 0, 0);
+}
+.slide-leave-to{
+    transform: translate3d(100%, 0, 0);
 }
 
 @keyframes move {

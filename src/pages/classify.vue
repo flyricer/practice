@@ -1,5 +1,5 @@
 <template>
-<transition name="slide">
+<!-- <transition name="slide"> -->
    	<div class="classify">
 			<goBack></goBack>
 	   	<div id="wrapper" ref="scrollWrap">
@@ -19,17 +19,17 @@
 		  			</li>
 	      		</ul>
 	        </div>
-	        <transition :name="loadingPosition">
+	        <!-- <transition :name="loadingPosition"> -->
 	        	<Loading id="loading"
 	        		 v-show="showLoading"
 	         		 :class='{pullDownLoading,pullUpLoading,center}'
 	         		 ref="loading"
 	         		 :loadingWord="loadingWord"
 	       		></Loading>	     
-	        </transition>    
+	        <!-- </transition> -->
 	    </div>
    	</div>
-</transition>
+<!-- </transition> -->
 </template>
 
 <script>
@@ -266,16 +266,20 @@ export default {
 	.classify{
 		width: 100%;
 		height: 100%;
+		position: absolute;
+    top: 0;
+    left: 0;
 		#wrapper{
 			position: relative;
 			top:0;
 			bottom:0;	
 			width: 100%;
 			height: 100%;
+			margin-top: 40px;
 			// z-index: 99999;
 			overflow: hidden;
 			background:#fff;
-			margin-top: 40px;
+			// margin-top: 40px;
 			.scroller{
 				position: absolute;
 				width: 100%;
@@ -339,26 +343,31 @@ export default {
 				}
 			}
 		}
-		.slide-enter-active{
-				transition:all 0.4s;
-		}
-		.slide-enter, .slide-leave-active{
-				transform:translate3d(100%,0,0);
-				transition:all 0.4s;
-		}
+		// .slide-enter-active, .slide-leave-active{
+    // 	transition: all 1.4s;
+		// }
+		// .slide-enter{
+		// 	transform: translate3d(-100%, 0, 0);
+		// }
+		// .slide-leave{
+		// 	transform: translate3d(0, 0, 0);
+		// }
+		// .slide-leave-to{
+		// 	transform: translate3d(-100%, 0, 0);
+		// }
 
-		.top-enter-active,.bot-enter-active{
-			transition:all 0.2s;
-		}
+		// .top-enter-active,.bot-enter-active{
+		// 	transition:all 0.2s;
+		// }
 
-		.top-enter, .top-leave-active{
-				transform:translateY(-100%);
-				transition:all 0.2s;
-		} 
+		// .top-enter, .top-leave-active{
+		// 		transform:translateY(-100%);
+		// 		transition:all 0.2s;
+		// } 
 
-		.bot-enter, .bot-leave-active{
-				transform:translateY(100%);
-				transition:all 0.2s;
-		}
+		// .bot-enter, .bot-leave-active{
+		// 		transform:translateY(100%);
+		// 		transition:all 0.2s;
+		// }
 	}
 </style>

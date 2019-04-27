@@ -19,6 +19,8 @@ import {getStyle} from '../base/js/util.js'
 
 import tab1 from '../components/com1.vue'
 import tab2 from '../components/com2.vue'
+import tab3 from '../components/com3.vue'
+import tab4 from '../components/com4.vue'
 
 export default {
     data() {
@@ -72,7 +74,9 @@ export default {
 
     components: {
         tab1,
-        tab2
+        tab2,
+        tab3,
+        tab4
     }
 
 }
@@ -82,6 +86,7 @@ export default {
 .container{
     width: 100%;
     height: 100%;
+    overflow: hidden;
     .wrapper{
         width: 100%;
         overflow: hidden;
