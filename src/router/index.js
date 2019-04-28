@@ -16,6 +16,8 @@ import Login from '../pages/login.vue'
 import example1 from '../components/example1.vue'
 import example2 from '../components/example2.vue'
 import example3 from '../components/example3.vue'
+import example4 from '../components/example4.vue'
+import example5 from '../components/example5.vue'
 // import test from '../test1/test.vue'
 // const Car = () => import('pages/car')
 // const Search = () => import('pages/search')
@@ -70,6 +72,16 @@ const router = new VueRouter({
               name: 'example3',
               path: 'example3',
               component: example3
+            },
+            {
+              name: 'example4',
+              path: 'example4',
+              component: example4
+            },
+            {
+              name: 'example5',
+              path: 'example5',
+              component: example5
             },
           ]
         },

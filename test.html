@@ -11,25 +11,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
         <style>
-            li{
-                height: 300px;
-                margin: 10px auto;
-                background-color: aqua
+            div{
+                width: 100px;
+                height: 100px;
+                position: relative;
+                left: 0px;
+                background-color: aqua;
+                transition: all 1s
+            }
+            div:hover {
+                left: 50px;
+                width: 200px;
             }
         </style>
     </head>
     <body>
-        <div id="test" style="width:1px;height:17px;background:#0f0;">0%</div>
-        <input type="button" value="Run" id="run"/>
+        <div id="test"></div>
+
         
         
         <script>
 
-            var slideDirection = false
-
-            var name = slideDirection ? 'forward' : 'backward'
-           
-            console.log(name)
         
         </script>
     </body>

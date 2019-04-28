@@ -2,7 +2,9 @@
     <div class="com-container">
         <div class='navWrapper' ref='navWrapper'>
             <ul class='nav-list' ref='navList'>
-                <li class='nav-item' v-for="(item,index) in navList" :class="{active: currentIndex == index}" @click="tabToSwiper(index)" :key="index"> 
+                <li class='nav-item' v-for="(item,index) in navList" 
+                    :class="{active: currentIndex == index}" 
+                    @click="tabToSwiper(index)" :key="index"> 
                     <a>{{item.name}}</a>
                 </li>
             </ul>
@@ -27,6 +29,8 @@
 import example1 from './example1.vue'
 import example2 from './example2.vue'
 import example3 from './example3.vue'
+import example4 from './example4.vue'
+import example5 from './example5.vue'
 
 export default {
     data() {
@@ -35,11 +39,15 @@ export default {
                 {name: '页面一'}, 
                 {name: '页面二'}, 
                 {name: '页面三'}, 
+                {name: '页面四'}, 
+                {name: '页面五'}, 
             ],
             tabList: [
                 {id: 1, component: 'example1'}, 
                 {id: 2, component: 'example2'}, 
                 {id: 3, component: 'example3'},  
+                {id: 4, component: 'example4'},  
+                {id: 5, component: 'example5'},  
             ],
             currentIndex: 0,
             startX: 0, //开始触摸的位置
@@ -68,13 +76,20 @@ export default {
             this.itemLength = this.$refs.componentContainer.children.length
         },
         tabToSwiper(index) {
-            this.$refs.componentContainer.style.left = -index*this.itemWidth + 'px'
-            this.currentIndex = index;
+            let _index = index;
+            (this.tabList).forEach((item,index) => {
+                this.$refs.swiperItem[index].style.transform = 'translate3d('+ (index+this.active+this.currentIndex-_index)*this.itemWidth +'px,0,0)'
+                // this.$refs.swiperItem[index].style.left = (parseInt(this.$refs.swiperItem[index].style.left)+(this.currentIndex-_index)*this.itemWidth)+'px'
+            })
+            this.active += this.currentIndex-_index
+            this.currentIndex = _index;
         },
+
         backlate (offert) {
             if(!offert) offert = 0;
             (this.tabList).forEach((item,index) => {
                 this.$refs.swiperItem[index].style.transform = 'translate3d('+ ((index+this.active)*this.itemWidth+offert) +'px,0,0)'
+                // this.$refs.swiperItem[index].style.left = (index+this.active)*this.itemWidth+offert+'px'
             })
         },
         touchStart(e,index){
@@ -87,7 +102,7 @@ export default {
             this.backlate (this.disX)
         },
         touchEnd(e,index){
-            if (this.ismove && Math.abs(this.disX)>=this.itemWidth/3) {
+            if (this.ismove) {
                 if (this.disX <= 0) {
                     if (index >= this.itemLength-1) {
                         this.backlate (0)
@@ -95,8 +110,7 @@ export default {
                     }
                     this.backlate (-this.itemWidth);
                     this.active--; 
-                    this.currentIndex = index + 1
-                    console.log(this.currentIndex)
+                    this.currentIndex++
                 }else{
                     if (index <= 0) {
                         this.backlate (0)
@@ -104,7 +118,7 @@ export default {
                     }
                     this.backlate (this.itemWidth)
                     this.active++;
-                    this.currentIndex = index - 1
+                    this.currentIndex--
                 }
             } else {
                 this.backlate (0)
@@ -118,7 +132,9 @@ export default {
     components: {
         example1,
         example2,
-        example3
+        example3,
+        example4,
+        example5,
     }
 
 }

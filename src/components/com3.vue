@@ -14,6 +14,7 @@
                 <li v-for="(item, index) in itemList" 
                     :key="item.id" 
                     v-show="currentIndex === index"
+                    ref="imglist"
                     @touchstart="touchStart($event)"
                     @touchmove="touchMove($event)"
                     @touchend="touchEnd($event)">
