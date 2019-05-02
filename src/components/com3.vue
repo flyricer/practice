@@ -1,130 +1,105 @@
 <template>
-    <div class="swiper-slide-container">
-        <div class="swiper-container">
-            <ul class="swiper-text">
-                <li
-                :class="{active: currentIndex === index}"
-                v-for="(item, index) in itemList" 
-                :key="item.id"
-                @click="changePic(index)">
-                    <a>{{item.id}}</a>
-                </li>
-            </ul>
-            <transition-group class="swiper-img-container" tag="ul" :name="slideDirect ? 'forward' : 'backward'" ref="swiperitem">
-                <li v-for="(item, index) in itemList" 
-                    :key="item.id" 
-                    v-show="currentIndex === index"
-                    ref="imglist"
-                    @touchstart="touchStart($event)"
-                    @touchmove="touchMove($event)"
-                    @touchend="touchEnd($event)">
-                    <img :src="item.img">
-                    
-                </li>
-            </transition-group>
+<div class="wiper-y" ref="wipery">
+    <div class="wiper-container" ref="wiperbox">
+        <div class="wiper-list" 
+        ref="wiperlist" 
+        @touchstart="touchStart"
+        @touchend="touchEnd"
+        @touchmove="touchMove">
+            <div class="wiper-item" :style="itemStyle">第一页</div>
+            <div class="wiper-item" :style="itemStyle">第二页</div>
+            <div class="wiper-item" :style="itemStyle">第三页</div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
-import { Transform } from 'stream';
-import { setTimeout } from 'timers';
 
 
 export default {
     name: 'swiper',
+    props:['mainHeight'],
     data () {
         return {
-            itemList:[],
-            currentIndex: 0,
-            startX: 0,
-            moveX: 0,
-            itemlength: 0,
-            itemWidth: 0,
-            slideDirect: true,
+            currentPage: 1,
+            startY: 0,
+            moveY: 0,
+            pageNum: 0,
             ismove: false,
-            tabscroll: true
         }
     },
     mounted () {
-        this.getData();
+        this.freshSize();
         this.$nextTick(()=>{
-            this.beforeswiper();
-        }) 
-        
+            // console.log(this.mainHeight)
+        })
     },
-    updated() {
-        // console.log(this.$refs.imglist[this.currentIndex])
-    },
-    watch: {
-        itemList() {
-            this.itemlength = this.itemList.length
+
+    computed:{
+        listStyle(){
+            // let style = {
+            //     height: this.mainHeight*this.pageNum+'px',
+            // }
+            // if(this.moveY != 0 ){
+            //     //拖动效果
+            //     style.top = this.pageNum == this.currentPage && this.moveY < 0 || this.currentPage == 1 && this.moveY > 0 ? 
+            //                 -this.mainHeight*(this.currentPage-1)+'px' 
+            //                 : -this.mainHeight*(this.currentPage-1)+ this.moveY +'px';
+            //     style.transition = "top 0s";
+            // }else{
+            //     //滚动翻页效果
+            //     style.top = -this.mainHeight*(this.currentPage-1)+'px';
+            //     style.transition = "top 1s";
+            // }
+            // return style
+        },
+        itemStyle() {
+            let style = {
+                height: this.mainHeight + "px",
+            }
+            return style
         }
     },
+
     methods: {
-        getData(){	    
-            this.axios.get('http://www.liulongbin.top:3005/api/getlunbo')
-            .then((res)=>{ 	  
-                this.itemList=res.data.message
-                // console.log(this.itemList)
-                // this.$nextTick(()=>{
-                //     this.freshWidth(); 
-                // }) 		   	    		
-            })
-        },
 
-        changePic(index) {
-            if (index > this.currentIndex) {
-                this.slideDirect = true
-            } else {
-                this.slideDirect = false
-            }
-            if (this.tabscroll) {
-                this.tabscroll = false
-                this.currentIndex = index
-                setTimeout(() => {
-                    this.tabscroll = true
-                },500)
-                
-
-            }
-
-            // this.currentIndex = index
-        },
-
-        beforeswiper () {
-            this.itemWidth = document.body.clientWidth
+        freshSize() {
+            this.pageNum = this.$refs.wiperlist.children.length;
+            this.$refs.wipery.style.height = this.mainHeight + 'px';
+            this.$refs.wiperlist.style.height = this.mainHeight*this.pageNum+'px'
         },
         touchStart(e){
-            this.startX = e.touches[0].clientX;
+            this.startY = e.touches[0].pageY;
         },
         touchMove(e){
-            let endX = e.touches[0].clientX;
-            this.moveX = endX - this.startX;
-            this.ismove = true;
+            this.moveY = e.changedTouches[0].pageY - this.startY;
+            this.transy(this.moveY)
         },
         touchEnd(e){
-            if (this.ismove) {
-                if (this.moveX <= 0) {
-                
-                    if (this.currentIndex >= this.itemlength-1) {
-                        this.currentIndex = this.itemlength-1
-                    }else{
-                        this.currentIndex++
-                        this.slideDirect = true
-                    }
-                }else{
-                    if (this.currentIndex <= 0) {
-                        this.currentIndex = 0
-                    }else{
-                        this.currentIndex--
-                        this.slideDirect = false
-                    }
-                }
+            let goDown = 0;
+            if (this.moveY > 10) {
+                goDown = 1
+            }else if(this.moveY < -10){
+                goDown = -1
             }
-            
+            this.changeItem(goDown);
+            // console.log(this.$refs.wiperlist.scrollTop)
         },
-
+        changeItem(down) {
+            if(down > 0 && this.currentPage > 1 && this.currentPage <= this.pageNum ){ //往下滑
+                this.currentPage = this.currentPage - 1;
+            }else if(down < 0 && this.currentPage >= 1 && this.currentPage < this.pageNum ){  //往上滑
+                this.currentPage = this.currentPage + 1;
+            }
+            console.log(this.currentPage)
+            this.transy(0)
+        },
+        transy(x) {
+            this.$refs.wiperlist.style.transform = 'translateY('+ (-this.mainHeight*(this.currentPage-1) + x) + 'px)';
+            // console.log(this.$refs.wiperlist.style.transform)
+            console.log(this.currentPage)
+        }
 
 
     }
@@ -132,64 +107,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.swiper-slide-container {
+.wiper-y {
     width: 100%;
-    .swiper-container {
+    .wiper-container{
+        height: 100%;
         width: 100%;
+        background: #c4c4c4;
+        overflow: hidden;
         position: relative;
-        .swiper-text{
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            li{
-                text-align: center;
-                flex: 1;
-                a{
-                    display: block
-                }
-            }
-            .active {
-                background-color: #c2c2c2;
-            }
-        }
-        .swiper-img-container {
+        .wiper-list{
             position: absolute;
             width: 100%;
-            li {
+            transition: all .5s;
+            .wiper-item{
                 width: 100%;
-                position: absolute;
-                left: 0;
-                top: 0;
-                img {
-                    width: 100%;
-                }
+                text-align: center;
+                background-color: cyan
             }
         }
     }
-  }
-// 动画
-.forward-enter-active, 
-.forward-leave-active {
-  transition: all 1s;
 }
 
-.forward-enter {
-  transform: translateX(100%);
-}
-
-.forward-leave-to {
-  transform: translateX(-100%);
-}
-
-.backward-enter-active, 
-.backward-leave-active {
-  transition: all 1s;
-}
-.backward-enter {
-  transform: translateX(-100%);
-}
-
-.backward-leave-to {
-  transform: translateX(100%);
-}
 </style>

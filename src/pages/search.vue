@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" ref="container">
         <div class='wrapper' ref='wrapper'>
             <ul class='scroller' ref='scroller'>
                 <li class='content' v-for="(item,index) in tabs" :class="{active:num == index}" @click="tab(index,item.type)" :key="item.type"> 
@@ -8,7 +8,7 @@
             </ul>
         </div>
         <keep-alive>
-            <component :is="componentId"></component>
+            <component :is="componentId" :mainHeight='mainHeight'></component>
         </keep-alive>
     </div>
 </template>
@@ -21,6 +21,7 @@ import tab1 from '../components/com1.vue'
 import tab2 from '../components/com2.vue'
 import tab3 from '../components/com3.vue'
 import tab4 from '../components/com4.vue'
+import tab5 from '../components/com5.vue'
 
 export default {
     data() {
@@ -37,11 +38,17 @@ export default {
                 ],
             num: 0,
             componentId: 'tab1',
+            mainHeight: 0,
         }
     },
 
     mounted() {
-        this.freshWidth();
+        this.freshSize();
+        console.log( this.mainHeight)
+        window.onresize = () => {
+            this.freshSize();
+            console.log( this.mainHeight)
+        };
         this.$nextTick(() => {
             this.initscroll();
             // this.scroll.refresh(); 
@@ -52,9 +59,12 @@ export default {
             this.num = index;
             this.componentId = v;
         },
-        freshWidth() {
+        freshSize() {
             let width = getStyle(this.$refs.scroller.children[0],'width');
-            this.$refs.scroller.style.width = width*this.$refs.scroller.children.length + 'px'
+            this.$refs.scroller.style.width = width*this.$refs.scroller.children.length + 'px';
+            let cheight = getStyle(this.$refs.container,'height');
+            let wheight = getStyle(this.$refs.wrapper,'height');
+            this.mainHeight = cheight - wheight;
         },
         initscroll() {
             if (!this.scroll) {
@@ -76,7 +86,8 @@ export default {
         tab1,
         tab2,
         tab3,
-        tab4
+        tab4,
+        tab5
     }
 
 }
@@ -93,6 +104,8 @@ export default {
         position: relative;
         left: 0;
         top: 0;
+        z-index: 99;
+        background-color: #ffffff;
         .scroller{
             white-space: nowrap;
             .content{
