@@ -208,7 +208,7 @@ export default {
 					pullDownRefresh:true,
 					pullUpLoad:true,
 				})
-				console.log(this.scroller)
+				// console.log(this.scroller)
 				/*下拉刷新*/
 				this.scroller.on('pullingDown',()=>{this.pullDownEvent()});
 

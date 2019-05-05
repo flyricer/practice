@@ -25,6 +25,7 @@ export default {
             ],
             pageNum: 0,
             itemHeight: this.mainHeight
+            // itemHeight: 706
         }
     },
     mounted () {
@@ -36,14 +37,14 @@ export default {
     computed:{
         itemStyle() {
             let style = {
-                height: this.mainHeight + "px",
+                height: this.itemHeight + "px",
             }
             return style
         }
     },
     methods: {
         freshSize() {
-            this.$refs.swipercomponent.style.height = this.mainHeight + 'px';
+            this.$refs.swipercomponent.style.height = this.itemHeight + 'px';
             this.pageNum = this.itemList.length
         },
     },
@@ -58,8 +59,9 @@ export default {
 .swiper-component {
     width: 100%;  
     .item{
-        background-color: antiquewhite;
-        text-align: center
+        background-color:blueviolet;
+        text-align: center;
+        border: 1px solid red
     }
 }  
 </style>

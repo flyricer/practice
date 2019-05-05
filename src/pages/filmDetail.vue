@@ -149,34 +149,39 @@ export default {
         changeNumber(num) {
             this.goodsnumber = this.goodsnumber + num <=0?1:this.goodsnumber + num
         },	
-        roll () {
-            clearTimeout(this.timer);
-            this.timer=setTimeout(()=>{
-                this.top = document.body.scrollTop || document.documentElement.scrollTop
-                // console.log(this.top)
-            },13)
+        // roll() {
+        //     clearTimeout(this.timer);
+        //     this.timer=setTimeout(()=>{
+        //         this.top = document.body.scrollTop || document.documentElement.scrollTop
+        //         console.log(this.top)
+        //     },13)
+        // },
+        roll() {
+            this.top = document.body.scrollTop || document.documentElement.scrollTop
         },
         scrollTo() {
-            this.scrollTop = sessionStorage.getItem('roll')
-            console.log(this.scrollTop)
+            this.scrollTop = sessionStorage.getItem('rolltop')
+            // console.log(this.scrollTop)
             window.scrollTo(0,this.scrollTop);
-            console.log(11)
+            
         }
     },
     mounted() {
         this.fetchData()
-        // console.log(this.$router)
     },
     updated() {
         this.scrollTo()
     },
-    activated () { 
+    activated() { 
         // this.scrollTop = sessionStorage.getItem('roll')
+        // console.log(this.scrollTop)
         // this.scrollTo()
+        console.log('activated')
         window.addEventListener('scroll', this.roll)
     },
-    deactivated () {
-        sessionStorage.setItem('roll', this.top)
+    deactivated() {
+        console.log('deactivated')
+        sessionStorage.setItem('rolltop', this.top)
         window.removeEventListener('scroll', this.roll,true)
     },
     watch: {

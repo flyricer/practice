@@ -1,6 +1,5 @@
 <template>
     <div id="index-container"> 
-        <swiperComponent></swiperComponent>
     
         <filmComponent 
             :el="filmType.topFilmData.scroller" 
@@ -24,7 +23,6 @@
 </template>
 
 <script>
-import swiperComponent from '../components/swiper.vue'
 import filmComponent from './filmList.vue'
 export default {
     data() {
@@ -50,7 +48,6 @@ export default {
         }
     },
     components:{
-        swiperComponent,
         filmComponent
     }
     
@@ -58,5 +55,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    #index-container {margin-bottom: 50px;}
+    #index-container {
+        margin-bottom: 50px;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 </style>

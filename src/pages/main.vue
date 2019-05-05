@@ -5,6 +5,12 @@
    	</keep-alive>
 		<foot-nav></foot-nav>
    </div>
+   <!-- <div class="main-container" @touchmove.prevent>
+  		<keep-alive>
+   			<router-view></router-view>	 
+   	</keep-alive>
+		<foot-nav></foot-nav>
+   </div> -->
 </template>
 
 <script>

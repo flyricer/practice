@@ -1,9 +1,8 @@
 <template>
-	 <div class="film">
+	<div class="film">
         <h3 class="film__type">
             <span>{{type}}</span>
-            <router-link :to='{path:"/classify/"+url}'><span class="more"><em>更多</em><em class="iconfont icongengduo"></em></span></router-link>
-                          
+            <router-link :to='{path:"/classify/"+url}'><span class="more"><em>更多</em><em class="iconfont icongengduo"></em></span></router-link>                         
         </h3>
         <div class="film__list" :ref="el" :data-request="url">         
             <ul class="clearfix">
@@ -42,8 +41,6 @@ export default {
     mounted(){
     	const el = this.$refs[this.el];
         this.scroller=this.initScroll(el);
-        console.log(el)
-        console.log(el.dataset)
         const {request}=el.dataset;
 
         this.axios.get(`/api/${request}?start=${Math.floor(Math.random()*10)}`)
@@ -66,14 +63,12 @@ export default {
                 click:true,
                 probeType:3,
                 scrollX:true,
-                scrollY:false
+                scrollY:false,
+                eventPassthrough:'vertical',
             })
         },
         freshWidth(el){
             var width=getStyle(el.children[0],"width");
-            // console.log(el);
-            // console.log(el.children[0]);
-            // console.log(width);
             var padding=getStyle(el.children[0],"padding-right");
             el.style.width=el.children.length*(width+padding+2)+"px";              
         },

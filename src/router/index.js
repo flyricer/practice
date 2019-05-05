@@ -30,6 +30,7 @@ import example5 from '../components/example5.vue'
 
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
     {
       path: '',

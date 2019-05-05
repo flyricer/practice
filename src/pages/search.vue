@@ -1,15 +1,19 @@
 <template>
-    <div class="container" ref="container">
-        <div class='wrapper' ref='wrapper'>
-            <ul class='scroller' ref='scroller'>
-                <li class='content' v-for="(item,index) in tabs" :class="{active:num == index}" @click="tab(index,item.type)" :key="item.type"> 
-                    <a class="tabvalue">{{item.title}}</a>
-                </li>
-            </ul>
+    <div class="container" ref="container" @touchmove.prevent>
+        <div class="nav-container">
+            <div class='wrapper' ref='wrapper'>
+                <ul class='scroller' ref='scroller'>
+                    <li class='content' v-for="(item,index) in tabs" :class="{active:num == index}" @click="tab(index,item.type)" :key="item.type"> 
+                        <a class="tabvalue">{{item.title}}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+        <div class="contentContainer">
         <keep-alive>
             <component :is="componentId" :mainHeight='mainHeight'></component>
         </keep-alive>
+        </div>
     </div>
 </template>
 
@@ -38,22 +42,37 @@ export default {
                 ],
             num: 0,
             componentId: 'tab1',
-            mainHeight: 0,
+            mainHeight: null,
         }
     },
 
     mounted() {
         this.freshSize();
-        console.log( this.mainHeight)
+        console.log(this.mainHeight)
         window.onresize = () => {
             this.freshSize();
-            console.log( this.mainHeight)
+            console.log(2)
         };
+
         this.$nextTick(() => {
             this.initscroll();
             // this.scroll.refresh(); 
         })      
     },
+    // computed:{//属性没有在data中预先定义
+    //     mainHeight() {
+    //         let cheight = getStyle(this.$refs.container,'height');
+    //         let wheight = getStyle(this.$refs.wrapper,'height');
+    //         return this.mainHeight = cheight - wheight;
+    //     }
+    // },
+    // watch:{//属性已在data中预先定义
+    //     mainHeight() {
+    //         let cheight = getStyle(this.$refs.container,'height');
+    //         let wheight = getStyle(this.$refs.wrapper,'height');
+    //         this.mainHeight = cheight - wheight;
+    //     }
+    // },
     methods: {
         tab(index,v) {
             this.num = index;
@@ -98,30 +117,43 @@ export default {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    .wrapper{
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-        left: 0;
+    background-color: blue;
+    .nav-container{
+        position: fixed;
         top: 0;
+        left: 0;
         z-index: 99;
-        background-color: #ffffff;
-        .scroller{
-            white-space: nowrap;
-            .content{
-                display: inline-block;
-                border-right: 1px solid #999999;
-                &:last-child {border-right: none};
-                .tabvalue {
-                    padding: 4px 20px;
-                    display: block;
-                    text-decoration: none
+        .wrapper{
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            left: 0;
+            top: 0;
+            z-index: 99;
+            background-color: #ffffff;
+            .scroller{
+                white-space: nowrap;
+                .content{
+                    display: inline-block;
+                    border-right: 1px solid #999999;
+                    &:last-child {border-right: none};
+                    .tabvalue {
+                        padding: 4px 20px;
+                        display: block;
+                        text-decoration: none
+                    }
                 }
+                .active {
+                    background-color: #c2c2c2;
+                };
             }
-            .active {
-                background-color: #c2c2c2;
-            };
         }
+    }
+    .contentContainer{
+        position: relative;
+        top: 30px;
+        height: 100%;
+        background-color: red
     }
 }
 </style>

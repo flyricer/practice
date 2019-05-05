@@ -63,7 +63,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
             this.beforeswiper();
-            this.backlate()
+            this.backlate1()
         })      
     },
     updated() {
@@ -85,12 +85,23 @@ export default {
             this.currentIndex = _index;
         },
 
-        backlate (offert) {
+        backlate1 (offert) {
             if(!offert) offert = 0;
             (this.tabList).forEach((item,index) => {
                 this.$refs.swiperItem[index].style.transform = 'translate3d('+ ((index+this.active)*this.itemWidth+offert) +'px,0,0)'
                 // this.$refs.swiperItem[index].style.left = (index+this.active)*this.itemWidth+offert+'px'
             })
+            
+        },
+        backlate2 (offert) {
+            if(!offert) offert = 0;
+            (this.tabList).forEach((item,index) => {
+                this.$refs.swiperItem[index].style.transform = 'translate3d('+ ((index+this.active)*this.itemWidth+offert) +'px,0,0)'
+                // this.$refs.swiperItem[index].style.left = (index+this.active)*this.itemWidth+offert+'px'
+                this.$refs.swiperItem[index].style.transition = 'transform .5s'
+            });
+            
+            
         },
         touchStart(e,index){
             this.startX = e.touches[0].clientX;
@@ -99,29 +110,29 @@ export default {
             var endX = e.touches[0].clientX;
             this.disX = endX - this.startX;
             this.ismove = true;
-            this.backlate (this.disX)
+            this.backlate1 (this.disX)
         },
         touchEnd(e,index){
             if (this.ismove) {
                 if (this.disX <= 0) {
                     if (index >= this.itemLength-1) {
-                        this.backlate (0)
+                        this.backlate2 (0)
                         return
                     }
-                    this.backlate (-this.itemWidth);
+                    this.backlate2 (-this.itemWidth);
                     this.active--; 
                     this.currentIndex++
                 }else{
                     if (index <= 0) {
-                        this.backlate (0)
+                        this.backlate2 (0)
                         return
                     }
-                    this.backlate (this.itemWidth)
+                    this.backlate2 (this.itemWidth)
                     this.active++;
                     this.currentIndex--
                 }
             } else {
-                this.backlate (0)
+                this.backlate2 (0);
             }
             
         },
@@ -146,6 +157,7 @@ export default {
     height: 100%;
     overflow: hidden;
     position: relative;
+    background-color: yellow;
     .navWrapper{
         width: 100%;
         overflow: hidden;
@@ -174,7 +186,7 @@ export default {
             height: 100%;
             display: inline-block;
             position: absolute;
-            transition: all .5s
+            // transition: all .5s
         }
     }
     

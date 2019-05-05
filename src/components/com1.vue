@@ -97,7 +97,13 @@ export default {
         this.$nextTick(()=> {
             this.initScroll()
             this.freshHeight()
+            // this.menuScroll.refresh()
+            // this.foodScroll.refresh()
         })
+    },
+    updated() {
+        this.menuScroll.refresh()
+        this.foodScroll.refresh()
     },
     methods: {
         initScroll() {
@@ -111,7 +117,6 @@ export default {
             //结合BScroll的接口使用,监听scroll事件(实时派发的),并获取鼠标坐标，当滚动时能实时暴露出scroll
             this.foodScroll.on('scroll', (pos) => {
                 this.scrolly = Math.abs(Math.round(pos.y))
-                console.log(this.scrolly)  //滚动坐标会出现负的,并且是小数,所以需要处理一下，实时取得scrollY
             })
         },
         freshHeight() {
@@ -145,7 +150,6 @@ export default {
                 if (!height2 || (this.scrolly >= height && this.scrolly < height2)) {
                     return i //返回这个menu子块的索引
                 }
-                console.log(scrollY)
             }
             return 0
         }

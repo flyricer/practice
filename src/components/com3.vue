@@ -27,9 +27,11 @@ export default {
             moveY: 0,
             pageNum: 0,
             ismove: false,
+            // mainHeight:706
         }
     },
     mounted () {
+        console.log(this.mainHeight)
         this.freshSize();
         this.$nextTick(()=>{
             // console.log(this.mainHeight)
@@ -37,23 +39,7 @@ export default {
     },
 
     computed:{
-        listStyle(){
-            // let style = {
-            //     height: this.mainHeight*this.pageNum+'px',
-            // }
-            // if(this.moveY != 0 ){
-            //     //拖动效果
-            //     style.top = this.pageNum == this.currentPage && this.moveY < 0 || this.currentPage == 1 && this.moveY > 0 ? 
-            //                 -this.mainHeight*(this.currentPage-1)+'px' 
-            //                 : -this.mainHeight*(this.currentPage-1)+ this.moveY +'px';
-            //     style.transition = "top 0s";
-            // }else{
-            //     //滚动翻页效果
-            //     style.top = -this.mainHeight*(this.currentPage-1)+'px';
-            //     style.transition = "top 1s";
-            // }
-            // return style
-        },
+    
         itemStyle() {
             let style = {
                 height: this.mainHeight + "px",
@@ -92,13 +78,13 @@ export default {
             }else if(down < 0 && this.currentPage >= 1 && this.currentPage < this.pageNum ){  //往上滑
                 this.currentPage = this.currentPage + 1;
             }
-            console.log(this.currentPage)
+            // console.log(this.currentPage)
             this.transy(0)
         },
         transy(x) {
             this.$refs.wiperlist.style.transform = 'translateY('+ (-this.mainHeight*(this.currentPage-1) + x) + 'px)';
             // console.log(this.$refs.wiperlist.style.transform)
-            console.log(this.currentPage)
+            // console.log(this.currentPage)
         }
 
 

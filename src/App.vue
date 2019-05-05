@@ -34,7 +34,6 @@ body{
 		height: 100%;
 		width: 100%;
 		font-family: Microsoft YaHei;
-		position: relative;
 		// .slide-enter-active{
 		// 		transition:all 2.4s;
 		// }
